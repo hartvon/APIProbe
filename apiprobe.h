@@ -36,43 +36,43 @@ private:
     QMap<QString, QString> collectHeaders();
 
     // UI组件
-    QWidget *centralWidget;
-    QVBoxLayout *mainLayout;
+    QWidget *m_centralWidget;
+    QVBoxLayout *m_mainLayout;
 
     // 顶部HTTP请求部分
-    QHBoxLayout *requestLayout;
-    QComboBox *methodComboBox;
-    UrlLineEdit *urlLineEdit;
-    QPushButton *sendButton;
+    QHBoxLayout *m_requestLayout;
+    QComboBox *m_methodComboBox;
+    UrlLineEdit *m_urlLineEdit;
+    QPushButton *m_sendButton;
 
     // 请求参数和头部标签页
-    QTabWidget *requestTabWidget;
+    QTabWidget *m_requestTabWidget;
 
     // Parameters标签页
-    QWidget *parametersTab;
-    QVBoxLayout *parametersLayout;
-    QGridLayout *paramsGridLayout;
-    QLabel *keyLabel;
-    QLabel *valueLabel;
-    QHBoxLayout *addParamLayout;
-    QPushButton *addParamButton;
+    QWidget *m_parametersTab;
+    QVBoxLayout *m_parametersLayout;
+    QGridLayout *m_paramsGridLayout;
+    QLabel *m_keyLabel;
+    QLabel *m_valueLabel;
+    QHBoxLayout *m_addParamLayout;
+    QPushButton *m_addParamButton;
 
     // Headers标签页
-    QWidget *headersTab;
-    QVBoxLayout *headersLayout;
-    QGridLayout *headersGridLayout;
-    QLabel *headerKeyLabel;
-    QLabel *headerValueLabel;
-    QHBoxLayout *addHeaderLayout;
-    QPushButton *addHeaderButton;
+    QWidget *m_headersTab;
+    QVBoxLayout *m_headersLayout;
+    QGridLayout *m_headersGridLayout;
+    QLabel *m_headerKeyLabel;
+    QLabel *m_headerValueLabel;
+    QHBoxLayout *m_addHeaderLayout;
+    QPushButton *m_addHeaderButton;
 
     // 响应部分
-    QGroupBox *responseGroup;
-    QVBoxLayout *responseLayout;
-    QPlainTextEdit *responseTextEdit;
+    QGroupBox *m_responseGroup;
+    QVBoxLayout *m_responseLayout;
+    QPlainTextEdit *m_responseTextEdit;
 
     // 网络管理器
-    QNetworkAccessManager *networkManager;
+    QNetworkAccessManager *m_networkManager;
 };
 
 #endif // APIPROBE_H
