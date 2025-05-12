@@ -10,9 +10,8 @@ qt_add_executable(APIProbe
     main.cpp
     apiprobe.cpp
     apiprobe.h
-    urllineedit.cpp
-    urllineedit.h
-    apiprobe.h
+    urledit.cpp
+    urledit.h
 )
 
 target_link_libraries(APIProbe

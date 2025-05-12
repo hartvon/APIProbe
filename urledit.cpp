@@ -1,6 +1,6 @@
-#include "urllineedit.h"
+#include "urledit.h"
 
-UrlLineEdit::UrlLineEdit(QWidget *parent)
+UrlEdit::UrlEdit(QWidget *parent)
     : QLineEdit(parent)
     , m_completer(new QCompleter(this))
     , m_model(new QStringListModel(this))
@@ -17,7 +17,7 @@ UrlLineEdit::UrlLineEdit(QWidget *parent)
     m_dropDownButton->setCursor(Qt::PointingHandCursor);
     m_dropDownButton->setStyleSheet("QToolButton { border: none; padding: 0px; }");
 
-    connect(m_dropDownButton, &QToolButton::clicked, this, &UrlLineEdit::showDropDownMenu);
+    connect(m_dropDownButton, &QToolButton::clicked, this, &UrlEdit::showDropDownMenu);
 
     // 调整按钮位置
     QSize buttonSize = m_dropDownButton->sizeHint();
@@ -25,12 +25,12 @@ UrlLineEdit::UrlLineEdit(QWidget *parent)
     m_dropDownButton->move(width() - buttonSize.width() - 3, (height() - buttonSize.height()) / 2);
 }
 
-UrlLineEdit::~UrlLineEdit()
+UrlEdit::~UrlEdit()
 {
     saveHistory();
 }
 
-void UrlLineEdit::addToHistory(const QString &url)
+void UrlEdit::addToHistory(const QString &url)
 {
     if (url.isEmpty() || m_urlHistory.contains(url)) {
         return;
@@ -45,22 +45,22 @@ void UrlLineEdit::addToHistory(const QString &url)
     saveHistory();
 }
 
-void UrlLineEdit::loadHistory()
+void UrlEdit::loadHistory()
 {
     m_urlHistory = m_settings.value("urls").toStringList();
 }
 
-void UrlLineEdit::saveHistory()
+void UrlEdit::saveHistory()
 {
     m_settings.setValue("urls", m_urlHistory);
 }
 
-void UrlLineEdit::showDropDownMenu()
+void UrlEdit::showDropDownMenu()
 {
     m_completer->complete();
 }
 
-void UrlLineEdit::resizeEvent(QResizeEvent *event)
+void UrlEdit::resizeEvent(QResizeEvent *event)
 {
     QLineEdit::resizeEvent(event);
     QSize buttonSize = m_dropDownButton->sizeHint();

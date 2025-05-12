@@ -9,13 +9,13 @@
 #include <QToolButton>
 #include <QStyle>
 
-class UrlLineEdit : public QLineEdit
+class UrlEdit : public QLineEdit
 {
     Q_OBJECT
 
 public:
-    explicit UrlLineEdit(QWidget *parent = nullptr);
-    ~UrlLineEdit();
+    explicit UrlEdit(QWidget *parent = nullptr);
+    ~UrlEdit();
 
     void addToHistory(const QString &url);
     void loadHistory();
