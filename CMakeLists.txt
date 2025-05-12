@@ -12,6 +12,8 @@ qt_add_executable(APIProbe
     apiprobe.h
     urledit.cpp
     urledit.h
+    tabpage.cpp
+    tabpage.h
 )
 
 target_link_libraries(APIProbe

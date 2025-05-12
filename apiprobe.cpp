@@ -16,7 +16,7 @@ APIProbe::APIProbe(QWidget *parent)
     // 创建顶部HTTP请求部分
     m_requestLayout = new QHBoxLayout();
     m_methodComboBox = new QComboBox(this);
-    m_urlLineEdit = new UrlLineEdit(this);
+    m_urlLineEdit = new UrlEdit(this);
     m_sendButton = new QPushButton("Send", this);
 
     // 初始化HTTP方法下拉框
@@ -36,53 +36,9 @@ APIProbe::APIProbe(QWidget *parent)
     // 创建请求参数和头部标签页
     m_requestTabWidget = new QTabWidget(this);
 
-    // 创建Parameters标签页
-    m_parametersTab = new QWidget();
-    m_parametersLayout = new QVBoxLayout(m_parametersTab);
-    m_paramsGridLayout = new QGridLayout();
-    m_keyLabel = new QLabel("Key", this);
-    m_valueLabel = new QLabel("Value", this);
-    m_addParamLayout = new QHBoxLayout();
-    m_addParamButton = new QPushButton("+", this);
-
-    // 设置Parameters标签页布局
-    m_paramsGridLayout->addWidget(m_keyLabel, 0, 0);
-    m_paramsGridLayout->addWidget(m_valueLabel, 0, 1);
-    m_paramsGridLayout->setColumnStretch(0, 1);
-    m_paramsGridLayout->setColumnStretch(1, 1);
-    m_paramsGridLayout->setColumnStretch(2, 0);
-
-    m_addParamLayout->addWidget(m_addParamButton);
-    m_addParamLayout->addStretch();
-
-    m_parametersLayout->addLayout(m_paramsGridLayout);
-    m_parametersLayout->addLayout(m_addParamLayout);
-    // m_parametersLayout->setStretch(0);
-    // m_parametersLayout->setStretch(1);
-    m_parametersLayout->addStretch();
-
-    // 创建Headers标签页
-    m_headersTab = new QWidget();
-    m_headersLayout = new QVBoxLayout(m_headersTab);
-    m_headersGridLayout = new QGridLayout();
-    m_headerKeyLabel = new QLabel("Key", this);
-    m_headerValueLabel = new QLabel("Value", this);
-    m_addHeaderLayout = new QHBoxLayout();
-    m_addHeaderButton = new QPushButton("+", this);
-
-    // 设置Headers标签页布局
-    m_headersGridLayout->addWidget(m_headerKeyLabel, 0, 0);
-    m_headersGridLayout->addWidget(m_headerValueLabel, 0, 1);
-    m_headersGridLayout->setColumnStretch(0, 1);
-    m_headersGridLayout->setColumnStretch(1, 1);
-    m_headersGridLayout->setColumnStretch(2, 0);
-
-    m_addHeaderLayout->addWidget(m_addHeaderButton);
-    m_addHeaderLayout->addStretch();
-
-    m_headersLayout->addLayout(m_headersGridLayout);
-    m_headersLayout->addLayout(m_addHeaderLayout);
-    m_headersLayout->addStretch();
+    // 创建标签页
+    m_parametersTab = new TabPage("Parameters", this);
+    m_headersTab = new TabPage("Headers", this);
 
     // 添加标签页到TabWidget
     m_requestTabWidget->addTab(m_parametersTab, "Parameters");
@@ -107,8 +63,7 @@ APIProbe::APIProbe(QWidget *parent)
     // 连接信号槽
     connect(m_sendButton, &QPushButton::clicked, this, &APIProbe::sendRequest);
     connect(m_networkManager, &QNetworkAccessManager::finished, this, &APIProbe::handleResponse);
-    connect(m_addParamButton, &QPushButton::clicked, this, &APIProbe::addParameterRow);
-    connect(m_addHeaderButton, &QPushButton::clicked, this, &APIProbe::addHeaderRow);
+
 }
 
 APIProbe::~APIProbe()
@@ -116,80 +71,14 @@ APIProbe::~APIProbe()
     // Qt会自动删除子对象，不需要手动删除
 }
 
-void APIProbe::addParameterRow()
-{
-    int row = m_paramsGridLayout->rowCount();
-
-    QLineEdit *keyEdit = new QLineEdit(this);
-    QLineEdit *valueEdit = new QLineEdit(this);
-    QPushButton *deleteButton = new QPushButton("-", this);
-    deleteButton->setMaximumWidth(30);
-
-    m_paramsGridLayout->addWidget(keyEdit, row, 0);
-    m_paramsGridLayout->addWidget(valueEdit, row, 1);
-    m_paramsGridLayout->addWidget(deleteButton, row, 2);
-
-    connect(deleteButton, &QPushButton::clicked, this, [=]() {
-        deleteRow(m_paramsGridLayout, row);
-    });
-}
-
-void APIProbe::addHeaderRow()
-{
-    int row = m_headersGridLayout->rowCount();
-
-    QLineEdit *keyEdit = new QLineEdit(this);
-    QLineEdit *valueEdit = new QLineEdit(this);
-    QPushButton *deleteButton = new QPushButton("-", this);
-    deleteButton->setMaximumWidth(30);
-
-    m_headersGridLayout->addWidget(keyEdit, row, 0);
-    m_headersGridLayout->addWidget(valueEdit, row, 1);
-    m_headersGridLayout->addWidget(deleteButton, row, 2);
-
-    connect(deleteButton, &QPushButton::clicked, this, [=]() {
-        deleteRow(m_headersGridLayout, row);
-    });
-}
-
-void APIProbe::deleteRow(QGridLayout *layout, int row)
-{
-    for (int col = 0; col < layout->columnCount(); ++col) {
-        QLayoutItem *item = layout->itemAtPosition(row, col);
-        if (item) {
-            QWidget *widget = item->widget();
-            if (widget) {
-                layout->removeItem(item);
-                delete widget;
-            }
-        }
-    }
-}
-
 QJsonObject APIProbe::collectParameters()
 {
-    QJsonObject params;
-    for (int row = 1; row < m_paramsGridLayout->rowCount(); ++row) {
-        QLineEdit *keyEdit = qobject_cast<QLineEdit*>(m_paramsGridLayout->itemAtPosition(row, 0)->widget());
-        QLineEdit *valueEdit = qobject_cast<QLineEdit*>(m_paramsGridLayout->itemAtPosition(row, 1)->widget());
-        if (keyEdit && valueEdit && !keyEdit->text().isEmpty()) {
-            params.insert(keyEdit->text(), valueEdit->text());
-        }
-    }
-    return params;
+    return m_parametersTab->collectData();
 }
 
 QMap<QString, QString> APIProbe::collectHeaders()
 {
-    QMap<QString, QString> headers;
-    for (int row = 1; row < m_headersGridLayout->rowCount(); ++row) {
-        QLineEdit *keyEdit = qobject_cast<QLineEdit*>(m_headersGridLayout->itemAtPosition(row, 0)->widget());
-        QLineEdit *valueEdit = qobject_cast<QLineEdit*>(m_headersGridLayout->itemAtPosition(row, 1)->widget());
-        if (keyEdit && valueEdit && !keyEdit->text().isEmpty()) {
-            headers.insert(keyEdit->text(), valueEdit->text());
-        }
-    }
-    return headers;
+    return m_headersTab->collectDataAsMap();
 }
 
 void APIProbe::sendRequest()
