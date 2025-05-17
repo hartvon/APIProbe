@@ -5,13 +5,11 @@
 #include <QSpacerItem>
 
 APIProbe::APIProbe(QWidget *parent)
-    : QMainWindow(parent)
+    : QWidget(parent)
     , m_networkManager(new QNetworkAccessManager(this))
 {
-    // 创建中央部件和主布局
-    m_centralWidget = new QWidget(this);
-    setCentralWidget(m_centralWidget);
-    m_mainLayout = new QVBoxLayout(m_centralWidget);
+    // 创建主布局
+    m_mainLayout = new QVBoxLayout(this);
 
     // 创建顶部HTTP请求部分
     m_requestLayout = new QHBoxLayout();
@@ -125,7 +123,7 @@ void APIProbe::handleResponse(QNetworkReply *reply)
             m_responseTextEdit->setPlainText(QString::fromUtf8(response));
         }
     } else {
-        m_responseTextEdit->setPlainText("错误: " + reply->errorString());
+        m_responseTextEdit->setPlainText("Error: " + reply->errorString());
     }
 
     reply->deleteLater();

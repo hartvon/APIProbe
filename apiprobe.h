@@ -1,7 +1,7 @@
 #ifndef APIPROBE_H
 #define APIPROBE_H
 
-#include <QMainWindow>
+#include <QWidget>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QGridLayout>
@@ -17,7 +17,7 @@
 #include "urledit.h"
 #include "tabpage.h"
 
-class APIProbe : public QMainWindow
+class APIProbe : public QWidget
 {
     Q_OBJECT
 
@@ -34,7 +34,6 @@ private:
     QMap<QString, QString> collectHeaders();
 
     // UI组件
-    QWidget *m_centralWidget;
     QVBoxLayout *m_mainLayout;
 
     // 顶部HTTP请求部分
