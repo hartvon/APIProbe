@@ -1,5 +1,5 @@
-#ifndef TABPAGE_H
-#define TABPAGE_H
+#ifndef REQUESTHEADER_H
+#define REQUESTHEADER_H
 
 #include <QWidget>
 #include <QVBoxLayout>
@@ -10,12 +10,12 @@
 #include <QJsonObject>
 #include <QMap>
 
-class TabPage : public QWidget
+class RequestHeader : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit TabPage(const QString &title, QWidget *parent = nullptr);
+    explicit RequestHeader(QWidget *parent = nullptr);
     QJsonObject collectData();
     QMap<QString, QString> collectDataAsMap();
 
@@ -32,4 +32,4 @@ private:
     QPushButton *m_addButton;
 };
 
-#endif // TABPAGE_H
+#endif // REQUESTHEADER_H

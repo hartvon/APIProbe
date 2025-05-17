@@ -15,7 +15,7 @@
 #include <QHBoxLayout>
 
 #include "urledit.h"
-#include "tabpage.h"
+#include "requestheader.h"
 
 class APIProbe : public QWidget
 {
@@ -28,26 +28,26 @@ public:
 private slots:
     void sendRequest();
     void handleResponse(QNetworkReply *reply);
+    void clearResponse();
+    void copyResponse();
 
 private:
-    QJsonObject collectParameters();
-    QMap<QString, QString> collectHeaders();
-
     // UI组件
     QVBoxLayout *m_mainLayout;
 
     // 顶部HTTP请求部分
-    QHBoxLayout *m_requestLayout;
+    QHBoxLayout *m_requestLineLayout;
     QComboBox *m_methodComboBox;
     UrlEdit *m_urlLineEdit;
     QPushButton *m_sendButton;
+    QPushButton *m_clearButton;
+    QPushButton *m_copyButton;
 
-    // 请求参数和头部标签页
-    QTabWidget *m_requestTabWidget;
-
-    // 标签页
-    TabPage *m_parametersTab;
-    TabPage *m_headersTab;
+    // 请求部分
+    QGroupBox *m_requestGroup;
+    QVBoxLayout *m_requestLayout;
+    RequestHeader *m_requestHeader;
+    QPlainTextEdit *m_requestBody;
 
     // 响应部分
     QGroupBox *m_responseGroup;
