@@ -32,6 +32,13 @@ private slots:
     void copyResponse();
 
 private:
+    // 网络管理器
+    QNetworkAccessManager *m_networkManager;
+
+    // 快捷键
+    QShortcut *m_sendShortcut;
+
+private:
     // UI组件
     QVBoxLayout *m_mainLayout;
 
@@ -53,9 +60,6 @@ private:
     QGroupBox *m_responseGroup;
     QVBoxLayout *m_responseLayout;
     QPlainTextEdit *m_responseTextEdit;
-
-    // 网络管理器
-    QNetworkAccessManager *m_networkManager;
 };
 
 #endif // APIPROBE_H

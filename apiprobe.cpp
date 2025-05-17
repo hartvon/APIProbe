@@ -4,11 +4,15 @@
 #include <QMessageBox>
 #include <QSpacerItem>
 #include <QClipboard>
+#include <QShortcut>
 
 APIProbe::APIProbe(QWidget *parent)
     : QWidget(parent)
-    , m_networkManager(new QNetworkAccessManager(this))
 {
+
+    m_networkManager = new QNetworkAccessManager(this);
+    m_sendShortcut = new QShortcut(QKeySequence("Ctrl+Return"), this);
+
     // 主布局
     m_mainLayout = new QVBoxLayout(this);
 
@@ -73,6 +77,7 @@ APIProbe::APIProbe(QWidget *parent)
 
     // 连接信号槽
     connect(m_sendButton, &QPushButton::clicked, this, &APIProbe::sendRequest);
+    connect(m_sendShortcut, &QShortcut::activated, this, &APIProbe::sendRequest);
     connect(m_networkManager, &QNetworkAccessManager::finished, this, &APIProbe::handleResponse);
     connect(m_clearButton, &QPushButton::clicked, this, &APIProbe::clearResponse);
     connect(m_copyButton, &QPushButton::clicked, this, &APIProbe::copyResponse);

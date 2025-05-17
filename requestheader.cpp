@@ -34,6 +34,8 @@ void RequestHeader::addRow()
 
     QLineEdit *keyEdit = new QLineEdit(this);
     QLineEdit *valueEdit = new QLineEdit(this);
+    keyEdit->setPlaceholderText("Enter header key");
+    valueEdit->setPlaceholderText("Enter header value");
     QPushButton *deleteButton = new QPushButton("-", this);
 
     m_gridLayout->addWidget(keyEdit, row, 0);
