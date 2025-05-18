@@ -21,7 +21,6 @@ RequestHeader::RequestHeader(QWidget *parent)
 
     // 添加所有布局
     m_mainLayout->addLayout(m_gridLayout);
-    m_mainLayout->addLayout(m_addLayout);
     m_mainLayout->addStretch();
 
     // 连接信号槽
@@ -65,8 +64,14 @@ QMap<QString, QString> RequestHeader::collectDataAsMap()
 {
     QMap<QString, QString> data;
     for (int row = 1; row < m_gridLayout->rowCount(); ++row) {
-        QLineEdit *keyEdit = qobject_cast<QLineEdit*>(m_gridLayout->itemAtPosition(row, 0)->widget());
-        QLineEdit *valueEdit = qobject_cast<QLineEdit*>(m_gridLayout->itemAtPosition(row, 1)->widget());
+        QLayoutItem *keyItem = m_gridLayout->itemAtPosition(row, 0);
+        QLayoutItem *valueItem = m_gridLayout->itemAtPosition(row, 1);
+
+        if (!keyItem || keyItem->isEmpty()) continue;
+
+        auto keyEdit = qobject_cast<QLineEdit*>(keyItem->widget());
+        auto valueEdit = qobject_cast<QLineEdit*>(valueItem->widget());
+
         if (keyEdit && valueEdit && !keyEdit->text().isEmpty()) {
             data.insert(keyEdit->text(), valueEdit->text());
         }

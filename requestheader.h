@@ -28,7 +28,6 @@ private:
     QGridLayout *m_gridLayout;
     QLabel *m_keyLabel;
     QLabel *m_valueLabel;
-    QHBoxLayout *m_addLayout;
     QPushButton *m_addButton;
 };
 

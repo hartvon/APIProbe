@@ -9,7 +9,6 @@
 APIProbe::APIProbe(QWidget *parent)
     : QWidget(parent)
 {
-
     m_networkManager = new QNetworkAccessManager(this);
     m_sendShortcut = new QShortcut(QKeySequence("Ctrl+Return"), this);
 
